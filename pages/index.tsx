@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { Layout } from '../components/Layout'
 import { Container, Box, Typography, TextField, Button, Link, Grid } from '@mui/material'
 import { useState, useEffect } from 'react'
-import { convertToString, validateCredentials } from '../lib/auth'
+import { convertToString, validateCredentials } from '../lib/validate'
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState('');
