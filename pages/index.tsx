@@ -2,63 +2,40 @@ import type { NextPage } from 'next'
 import { Layout } from '../components/Layout'
 import { Container, Box, Typography, TextField, Button, Link, Grid } from '@mui/material'
 import { useState, useEffect } from 'react'
-
-interface Credentials {
-  email: string;
-  password: string;
-}
-
-//convert to string
-function convertToString(value: FormDataEntryValue | null): string {
-  return value !== null ? value.toString() : "";
-}
-
-//validation
-function validateCredentials(email: string, password: string): Credentials {
-  const errors: Credentials = {email: "", password: ""};
-
-  if (!email) {
-    errors["email"] = 'Email is required.';
-  } else if (!/\S+@\S+\.\S+/.test(email)) {
-    errors["email"] = 'Invalid email format.';
-  }
-
-  if (!password) {
-    errors["password"] = 'Password is required.';
-  } else if (password.length < 8) {
-    errors["password"] = 'Password must be at least 8 characters.';
-  }
-
-  return errors;
-}
-
+import { convertToString, validateCredentials } from '../lib/auth'
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState({email:'', password:''});
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.message);
-      return;
+    const formdata = new FormData(e.currentTarget);
+    const error = validateCredentials(convertToString(formdata.get('email')), convertToString(formdata.get('password')))
+    setError((prevState) => ({...prevState, email:error.email, password:error.password}));
+    console.log(error)
+    if (error.email === '' && error.password === ''){
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        //setError(data.message);
+        return;
+      }
+  
+      // Redirect to dashboard page
+      window.location.href = '/';
     }
-
-    // Redirect to dashboard page
-    window.location.href = '/dashboard';
+    
   };
 
   useEffect(() => {
@@ -110,6 +87,8 @@ const Home: NextPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              error={error.email != ''}
+              helperText={error.email != '' ? error.email : ''}
             />
             <TextField
               margin="normal"
@@ -120,6 +99,8 @@ const Home: NextPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={error.password != ''}
+              helperText={error.password != '' ? error.password : ''}
             />
             <Button
               type="submit"
