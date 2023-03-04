@@ -4,6 +4,11 @@ import { Container, Box, Typography, TextField, Button, Link, Grid } from '@mui/
 import { useState, useEffect } from 'react'
 import { convertToString, validateCredentials } from '../lib/validate'
 
+interface data {
+	email: string,
+	password: string,
+}
+
 const Home: NextPage = () => {
 	const [message, setMessage] = useState('');
 	const [email, setEmail] = useState('');
@@ -16,20 +21,27 @@ const Home: NextPage = () => {
 		const error = validateCredentials(convertToString(formdata.get('email')), convertToString(formdata.get('password')))
 		setError((prevState) => ({ ...prevState, email: error.email, password: error.password }));
 		console.log(error)
+
+		const postdata:data = {
+			email: convertToString(formdata.get('email')),
+			password: convertToString(formdata.get('password')),
+		}
+		
 		if (error.email === '' && error.password === ''){
+			console.log('no error')
 			const res = await fetch('/api/login', {
 			  method: 'POST',
 			  headers: {
 				'Content-Type': 'application/json'
 			  },
-			  body: JSON.stringify({ email, password })
+			  body: JSON.stringify({ email: postdata.email, password: postdata.password })
 			});
 		
 			const data = await res.json();
-		
+			console.log(data.message)
 			if (!res.ok) {
-			  //setError(data.message);
-			  return;
+				setMessage(data.message);
+			  	return;
 			}
 		
 			// Redirect to dashboard page
