@@ -9,9 +9,11 @@ const JWT_SECRET = 'secret-key';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST'){
     const {email, password} = req.body;
-
+    console.log(req.body)
+    
     const user = await findByEmail(email);
-
+    console.log(user)
+    
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
