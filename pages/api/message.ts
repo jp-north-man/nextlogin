@@ -12,8 +12,9 @@ const handler = (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     try {
-      const { email } = jwt.verify(token, JWT_SECRET) as { email: string };
-      res.json({ email });
+      const user = jwt.verify(token, JWT_SECRET) as {email: string};  
+      console.log(user.email)
+      res.json({ email: user.email });
     } catch (err) {
       res.status(401).json({ message: 'Unauthorized' });
     }
