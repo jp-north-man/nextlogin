@@ -1,17 +1,22 @@
 # intro
-Login authentication using JWT token with next.js and typescript.
-After logging in, "Welcome: email address" will be displayed.  
+Login authentication using JWT token with next.js and typescript.<br>
+After logging in, "Welcome: email address" will be displayed.<br>
 
 
 # how to use
-prepare the environment  
+1. prepare the environment<br>
 ```
 git clone https://github.com/jp-north-man/nextlogin.git
 cd nextlogin/
 npm install bcryptjs @types/bcryptjs @types/jsonwebtoken jsonwebtoken @mui/material @emotion/react @emotion/styled
 npm run dev
 ```    
+<br>
   
-access localhost  
-  
-  
+2. access<br>
+Access localhost.<br><br>
+
+3. login!<br>
+Enter email:user1@example.com and password:password to log in!<br><br>
+
+![ログイン画面](public/Screenshot from 2023-03-06 22-36-50.png)
