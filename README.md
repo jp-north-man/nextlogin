@@ -19,4 +19,4 @@ Access localhost.<br><br>
 3. login!<br>
 Enter email:user1@example.com and password:password to log in!<br><br>
 
-![ログイン画面](public/Screenshot from 2023-03-06 22-36-50.png)
+![ログイン画面](public/Screenshot.png)
