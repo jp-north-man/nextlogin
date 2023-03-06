@@ -1,7 +1,7 @@
 # intro
 Login authentication using JWT token with next.js and typescript.<br>
 After logging in, "Welcome: email address" will be displayed.<br>
-
+There is a function to validate email and password in the lib folder.<br>
 
 # how to use
 1. prepare the environment<br>
